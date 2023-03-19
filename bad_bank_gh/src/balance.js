@@ -5,26 +5,16 @@ import Card from './card';
 function Balance(){
   const ctx = React.useContext(UserContext);
 
-  const [loggedIn, setLoggedIn] = React.useState('');
-  const [balance, setBalance] = React.useState('');
-
-  React.useEffect(() => {
-    // Find the most recently logged-in user
-    const currentUser = ctx.users[ctx.users.length - 1];
-    setLoggedIn(currentUser.name);
-    setBalance(currentUser.balance);
-  }, [ctx.users]);
-
   return (
     <>
-    <div>Currently logged in as {loggedIn}</div>
+    <div>Currently logged in as {ctx.loggedInUser.name}</div>
     <Card
       bgcolor='info'
       header='Current Balance'
       text="Here you can see your most up to date balance"
       body={(
         <div>
-          Your current balance is: ${balance}
+          {ctx.loggedInUser.balance ? `Your current balance is: $${ctx.loggedInUser.balance}` : 'You can\'t access a balance if you are not logged in yet. Please create an account or log in.'}
         </div>
       )}
     />

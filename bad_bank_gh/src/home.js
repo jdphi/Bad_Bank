@@ -8,20 +8,10 @@ import Card from './card.js';
 
 function Home(){
   const ctx = React.useContext(UserContext);  
-  const [loggedIn, setLoggedIn] = React.useState('');
-
-  function getCurrentUser() {
-    return ctx.users[ctx.users.length - 1];
-  }
-
-  React.useEffect(() => {
-    const currentUser = getCurrentUser();
-    setLoggedIn(currentUser.name);
-  }, [ctx.users]);
 
   return (
     <>
-    <div>Currently logged in as {loggedIn}</div>
+    <div>Currently logged in as {ctx.loggedInUser.name}</div>
     <Card
             bgcolor='primary'
             txtcolor='black'

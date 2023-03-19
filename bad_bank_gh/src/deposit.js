@@ -7,25 +7,12 @@ function Deposit(){
 
   const [amount, setAmount] = React.useState('');
   const [status, setStatus] = React.useState('');
-  const [loggedIn, setLoggedIn] = React.useState('');
-
-  function getCurrentUser() {
-    return ctx.users[ctx.users.length - 1];
-  }
-
-  function getCurrentUserBalance() {
-    const currentUser = getCurrentUser();
-    return currentUser.balance
-  }
-
-  React.useEffect(() => {
-    const currentUser = getCurrentUser();
-    setLoggedIn(currentUser.name);
-  }, [ctx.users]);
 
   function handleDeposit() {
+
+
     // Find the most recently logged-in user
-    const currentUser = getCurrentUser()
+    const currentUser = ctx.loggedInUser;
     // Validate the deposit amount  
     if (!amount || amount <= 0) {
       setStatus('Invalid deposit amount');
@@ -41,7 +28,7 @@ function Deposit(){
 
   return (
     <>
-    <div>Currently logged in as {loggedIn}</div>
+    <div>Currently logged in as {ctx.loggedInUser.name}</div>
     <Card 
       bgcolor='primary'
       header='Deposit'
@@ -56,7 +43,7 @@ function Deposit(){
         </>
       )}
     />
-    <div>Here is your up-to-date balance: ${getCurrentUserBalance()}</div>
+    <div>Here is your up-to-date balance: ${ctx.loggedInUser.balance}</div>
     </>
   )
 }

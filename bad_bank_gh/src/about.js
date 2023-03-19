@@ -7,6 +7,8 @@ function About(){
     const ctx = React.useContext(UserContext);  
 
     return (
+        <>
+        <div>Currently logged in as {ctx.loggedInUser.name}</div>
         <Card
             bgcolor='primary'
             txtcolor='black'
@@ -15,6 +17,7 @@ function About(){
             and does not have accurate data. This is a project that is meant to show the skills of a beginner React developer.'
             body={(<img src={bankImg} className="img-fluid" alt="Responsive Image"/>)}
         />
+        </>
     )
 }
 

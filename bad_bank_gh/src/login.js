@@ -4,17 +4,6 @@ import { UserContext } from './context';
 
 function Login(){
   const ctx = React.useContext(UserContext);  
-  const [loggedIn, setLoggedIn] = React.useState('');
-
-  function getCurrentUser() {
-    return ctx.users[ctx.users.length - 1];
-  }
-
-  React.useEffect(() => {
-    const currentUser = getCurrentUser();
-    setLoggedIn(currentUser.name);
-  }, [ctx.users]);
-
   const [show, setShow]         = React.useState(true);
   const [status, setStatus]     = React.useState('');
   const [email, setEmail]       = React.useState('');
@@ -28,6 +17,9 @@ function Login(){
       setEmail('');
       setPassword('');
       setShow(false);
+      // Store the logged-in user's information in the UserContext
+      ctx.setLoggedInUser(user);
+
     } else {
       // Failed login - update status
       setStatus('Incorrect email or password');
@@ -45,7 +37,7 @@ function Login(){
 
   return (
     <>
-    <div>Currently logged in as {loggedIn}</div>
+    <div>Currently logged in as {ctx.loggedInUser.name}</div>
     <Card
       bgcolor='primary'
       header='Login'

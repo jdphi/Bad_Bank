@@ -3,16 +3,20 @@ import React from 'react';
 const UserContext = React.createContext(null);
 
 function UserProvider({children}) {
-    return <UserContext.Provider value={{
-        users: [
-        {
-        name: 'jeremy', 
-        email: 'jeremy@example.com',
-        password: 'secret',
-        balance: 100
-        }
-    ]
-}}>{children}</UserContext.Provider>
-}
+    const [users, setUsers] = React.useState([]);
+    const [loggedInUser, setLoggedInUser] = React.useState({name: '-- you are not logged in yet.'});
 
+    const contextValue = {
+        users: users,
+        setUsers: setUsers,
+        loggedInUser: loggedInUser,
+        setLoggedInUser: setLoggedInUser,
+      };
+    
+      return (
+        <UserContext.Provider value={contextValue}>
+          {children}
+        </UserContext.Provider>
+      );
+}
 export { UserContext, UserProvider };

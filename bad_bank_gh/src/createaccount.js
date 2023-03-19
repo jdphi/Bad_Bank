@@ -10,17 +10,6 @@ function CreateAccount(){
   const [name, setName]         = React.useState('');
   const [email, setEmail]       = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [loggedIn, setLoggedIn] = React.useState('');
-
-  function getCurrentUser() {
-    return ctx.users[ctx.users.length - 1];
-  }
-
-  React.useEffect(() => {
-    const currentUser = getCurrentUser();
-    setLoggedIn(currentUser.name);
-  }, [ctx.users]);
-   
 
   function validate(field, label){
     if (!field) {
@@ -36,8 +25,12 @@ function CreateAccount(){
     if (!validate(name, 'name')) return;
     if (!validate(email,  'email')) return;
     if (!validate(password, 'password')) return;
-    ctx.users.push({name,email,password,balance:100});
+    const newUser = {name, email, password, balance: 100};
+
+    ctx.setUsers([...ctx.users, newUser]);
+    ctx.setLoggedInUser(newUser);
     setShow(false);
+
   }
 
   function clearForm(){
@@ -49,7 +42,7 @@ function CreateAccount(){
 
   return (
     <>
-    <div>Currently logged in as {loggedIn}</div>    
+    <div>Currently logged in as {ctx.loggedInUser.name}</div>    
     <Card
       bgcolor='primary'
       header='Create Account'
@@ -72,7 +65,7 @@ function CreateAccount(){
         <>
         <h5>Success</h5>
         <p>Your account has been created.</p>
-        <p>You are now logged in as this newly created account. Give the application some time to show that you are now logged in.</p>
+        <p>You are now logged in as this newly created account.</p>
         <button type='submit' className='btn btn-light' onClick={clearForm}>Create another account</button>
         </>
       )}

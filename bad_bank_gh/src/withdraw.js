@@ -4,28 +4,10 @@ import Card from './card';
 
 function Withdraw(){
   const ctx = React.useContext(UserContext);
-
   const [amount, setAmount] = React.useState('');
   const [status, setStatus] = React.useState('');
-  const [loggedIn, setLoggedIn] = React.useState('');
-
-  function getCurrentUser() {
-    return ctx.users[ctx.users.length - 1];
-  }
-
-  function getCurrentUserBalance() {
-    const currentUser = getCurrentUser();
-    return currentUser.balance;
-  }
-
-  React.useEffect(() => {
-    const currentUser = getCurrentUser();
-    setLoggedIn(currentUser.name);
-  }, [ctx.users]);
 
   function handleWithdraw() {
-    // Find the most recently logged-in user
-    const currentUser = getCurrentUser()
     // Validate the withdraw amount  
     if (!amount || amount <= 0) {
       setStatus('Invalid withdraw amount');
@@ -34,21 +16,21 @@ function Withdraw(){
     }
 
     // Validate if the user has enough balance
-    if (parseFloat(amount) > currentUser.balance) {
-      setStatus(`Insufficient funds, you have only $${currentUser.balance}`);
+    if (parseFloat(amount) > ctx.loggedInUser.balance) {
+      setStatus(`Insufficient funds, you have only $${ctx.loggedInUser.balance}`);
       setAmount('');
       return;
     }
 
     // Update the user's balance and reset the form
-    currentUser.balance -= parseFloat(amount);
+    ctx.loggedInUser.balance -= parseFloat(amount);
     setAmount('');
     setStatus(`Successfully withdrew $${amount}`);
   }
 
   return (
     <>
-    <div>Currently logged in as {loggedIn}</div>
+    <div>Currently logged in as {ctx.loggedInUser.name}</div>
     <Card 
       bgcolor='primary'
       header='Withdraw'
@@ -63,7 +45,7 @@ function Withdraw(){
         </>
       )}
     />
-    <div>Here is your up-to-date balance: ${getCurrentUserBalance()}</div>
+    <div>Here is your up-to-date balance: {ctx.loggedInUser.balance}</div>
     </>
   )
 }
